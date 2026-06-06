@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Impressum – Plant Lover</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f7eed3;
+      --muted: #d9caa1;
+      --gold: #cdb77a;
+      --gold-bright: #ead59a;
+      --leaf: #18301c;
+      --panel: rgba(5, 17, 9, 0.82);
+      --line: rgba(205, 183, 122, 0.72);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, system-ui, sans-serif;
+      background: #061006;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      content: "";
+      background-image: url("assets/plant-background-desktop.png");
+      background-repeat: no-repeat;
+      background-position: top center;
+      background-size: cover;
+      filter: saturate(1.06) contrast(1.04);
+    }
+
+    body::after {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      content: "";
+      background: linear-gradient(180deg, rgba(6,16,6,0.55) 0%, rgba(6,16,6,0.78) 60%, rgba(6,16,6,0.95) 100%);
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 48px;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .back:hover { opacity: 1; }
+
+    h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--gold-bright);
+      margin: 0 0 40px;
+      letter-spacing: 0.01em;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 36px 40px;
+      backdrop-filter: blur(12px);
+    }
+
+    h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin: 32px 0 10px;
+    }
+
+    h2:first-child { margin-top: 0; }
+
+    p {
+      margin: 0 0 12px;
+      line-height: 1.7;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    a { color: var(--gold); }
+
+    footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 48px;
+      color: #f1dca9;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.6);
+    }
+
+    footer svg {
+      width: 20px;
+      height: 20px;
+      color: var(--gold);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M19 12H5M5 12l7-7M5 12l7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Zurück zur Startseite
+    </a>
+
+    <h1>Impressum</h1>
+
+    <div class="card">
+      <h2>Angaben gemäß § 5 TMG</h2>
+      <p>
+        Max Schwarz<br>
+        Kessenicher Straße 108<br>
+        53879 Euskirchen
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        E-Mail: <a href="mailto:schwarzmax169@gmail.com">schwarzmax169@gmail.com</a>
+      </p>
+
+      <h2>Inhalt und Zweck</h2>
+      <p>
+        Diese Website ist eine private, nicht-kommerzielle Seite zur Vorstellung ausgewählter Pflanzen-Shops. Es bestehen keine bezahlten Werbekooperationen. Die Darstellung der Shops erfolgt auf freiwilliger Basis und wurde mit den jeweiligen Shop-Betreibern abgestimmt.
+      </p>
+
+      <h2>Haftung für Inhalte</h2>
+      <p>
+        Als Betreiber dieser Seite bin ich für eigene Inhalte nach den allgemeinen Gesetzen verantwortlich. Für externe Links übernehme ich keine Haftung – für deren Inhalte sind die jeweiligen Anbieter verantwortlich.
+      </p>
+
+      <h2>Urheberrecht</h2>
+      <p>
+        Eigene Inhalte (Texte, Fotos) auf dieser Website unterliegen dem deutschen Urheberrecht. Die Nutzung von Shop-Logos und -bildern erfolgt mit ausdrücklicher Genehmigung der jeweiligen Shop-Betreiber.
+      </p>
+    </div>
+
+    <footer>
+      <span>Plant Lover – Bring Nature Home</span>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21V9M12 13c-4.5 0-7-2.8-7-7 4.5 0 7 2.8 7 7Zm0 3c4.5 0 7-2.8 7-7-4.5 0-7 2.8-7 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </footer>
+  </div>
+</body>
+</html>
