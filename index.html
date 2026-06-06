@@ -1263,6 +1263,7 @@
       }
 
       loadLiveLikes();
+      fetch("/.netlify/functions/visits", { method: "POST" }).catch(() => {});
     }
 
     loadMoreButton.addEventListener("click", () => {
