@@ -1,0 +1,1289 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plant Lover - Bring Nature Home</title>
+  <meta name="description" content="Ausgesuchte Pflanzen-Shops f&uuml;r Plant Lover.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f7eed3;
+      --muted: #d9caa1;
+      --gold: #cdb77a;
+      --gold-bright: #ead59a;
+      --leaf: #18301c;
+      --leaf-soft: rgba(32, 62, 35, 0.92);
+      --panel: rgba(5, 17, 9, 0.82);
+      --panel-soft: rgba(11, 28, 14, 0.76);
+      --line: rgba(205, 183, 122, 0.72);
+      --shadow: 0 26px 70px rgba(0, 0, 0, 0.46);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #061006;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      content: "";
+    }
+
+    body::before {
+      z-index: -3;
+      background-image: url("assets/plant-background-desktop.png");
+      background-repeat: no-repeat;
+      background-position: top center;
+      background-size: cover;
+      filter: saturate(1.06) contrast(1.04);
+    }
+
+    body::after {
+      z-index: -2;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(251, 236, 190, 0.22), transparent 24rem),
+        radial-gradient(circle at 18% 10%, rgba(8, 17, 8, 0.14), transparent 18rem),
+        linear-gradient(180deg, rgba(3, 8, 3, 0.06), rgba(2, 7, 3, 0.36) 36%, rgba(1, 5, 2, 0.62));
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 1120px);
+      margin: 0 auto;
+      padding: 48px 22px 32px;
+    }
+
+    .hero {
+      display: flex;
+      min-height: 318px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-inner {
+      width: min(100%, 680px);
+      padding: 18px 14px 28px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle, rgba(245, 232, 190, 0.58), rgba(245, 232, 190, 0.22) 38%, transparent 72%);
+      text-shadow: 0 2px 18px rgba(245, 232, 190, 0.24);
+    }
+
+    .brand-mark {
+      display: inline-grid;
+      width: 62px;
+      height: 62px;
+      margin-bottom: 6px;
+      place-items: center;
+      color: #0d2715;
+    }
+
+    .brand-mark svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.22));
+    }
+
+    h1 {
+      margin: 0;
+      color: #102817;
+      font-family: "Great Vibes", "Brush Script MT", cursive;
+      font-size: clamp(5rem, 13vw, 8rem);
+      font-weight: 400;
+      line-height: 0.84;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 28px 0 0;
+      color: #172819;
+      font-size: clamp(1.02rem, 2.2vw, 1.35rem);
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: min(260px, 72vw);
+      margin: 18px auto 0;
+      color: rgba(39, 60, 33, 0.66);
+    }
+
+    .ornament::before,
+    .ornament::after {
+      width: 86px;
+      height: 1px;
+      background: currentColor;
+      content: "";
+    }
+
+    .hero-bar {
+      width: 100%;
+      margin: 8px auto 0;
+      padding: 13px 20px 15px;
+      border: 1px solid rgba(205, 183, 122, 0.28);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(2, 9, 4, 0.58), rgba(4, 14, 7, 0.62) 50%, rgba(2, 9, 4, 0.58));
+      color: #f0ddb1;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-bar h2,
+    .hero-bar p {
+      width: min(780px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero-bar h2 {
+      color: #f6e4b7;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1.85rem, 3.6vw, 2.7rem);
+      font-weight: 700;
+      line-height: 1.02;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-bar p {
+      margin-top: 2px;
+      color: #eadbb8;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(1.22rem, 2.12vw, 1.58rem);
+      font-weight: 600;
+      line-height: 1.22;
+      letter-spacing: 0.01em;
+    }
+
+    .shops {
+      position: relative;
+      padding-top: 8px;
+    }
+
+    .shops::before {
+      position: absolute;
+      z-index: -1;
+      inset: 0 -44px -48px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(234, 213, 154, 0.11), transparent 20rem),
+        linear-gradient(90deg, transparent, rgba(2, 10, 5, 0.82) 11%, rgba(4, 15, 7, 0.72) 50%, rgba(2, 10, 5, 0.82) 89%, transparent);
+      backdrop-filter: blur(5px);
+      content: "";
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .shop-card {
+      position: relative;
+      display: flex;
+      min-height: 304px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(10, 27, 13, 0.9), rgba(3, 13, 6, 0.88)),
+        rgba(4, 14, 7, 0.9);
+      box-shadow: var(--shadow);
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .shop-card:hover,
+    .shop-card:focus-visible {
+      transform: translateY(-5px);
+      border-color: var(--gold-bright);
+      background:
+        linear-gradient(180deg, rgba(19, 45, 23, 0.94), rgba(4, 15, 7, 0.94)),
+        rgba(8, 20, 10, 0.94);
+      box-shadow: 0 34px 84px rgba(0, 0, 0, 0.55);
+      outline: none;
+    }
+
+    .shop-card[hidden] {
+      display: none;
+    }
+
+    .shop-heart {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 25px;
+      height: 25px;
+      color: var(--gold-bright);
+      opacity: 0.94;
+      cursor: pointer;
+      transition: color 160ms ease, transform 160ms ease, filter 160ms ease;
+      z-index: 2;
+    }
+
+    .shop-heart path {
+      transition: fill 160ms ease, stroke 160ms ease;
+    }
+
+    .shop-heart:hover,
+    .shop-heart:focus-visible {
+      transform: scale(1.1);
+      outline: none;
+      filter: drop-shadow(0 0 12px rgba(255, 92, 108, 0.34));
+    }
+
+    .shop-heart.is-liked {
+      color: #ff5a6b;
+    }
+
+    .shop-heart.is-liked path {
+      fill: #c93342;
+      stroke: #ffc2c8;
+    }
+
+    .shop-like-count {
+      position: absolute;
+      top: 42px;
+      right: 15px;
+      min-width: 28px;
+      color: #ffc2c8;
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1;
+      text-align: center;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transform: translateY(-2px);
+      transition: opacity 160ms ease, transform 160ms ease;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .shop-like-count.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .shop-mark {
+      display: grid;
+      width: 104px;
+      height: 104px;
+      margin: 0 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(205, 183, 122, 0.14), transparent 52%),
+        rgba(16, 42, 21, 0.78);
+      color: var(--gold);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .shop-mark.has-image {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .shop-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: translate(var(--logo-x, 0%), var(--logo-y, 0%)) scale(var(--logo-scale, 1));
+      transform-origin: center;
+    }
+
+    .shop-mark svg {
+      width: 56px;
+      height: 56px;
+    }
+
+    .shop-title {
+      min-height: 48px;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Great Vibes", "Brush Script MT", cursive;
+      font-size: clamp(1.8rem, 2.35vw, 2.2rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .shop-tags {
+      min-height: 44px;
+      margin: 8px 0 0;
+      color: var(--gold-bright);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .shop-desc {
+      margin: 9px 0 16px;
+      color: #fff8e6;
+      font-size: 0.91rem;
+      line-height: 1.5;
+    }
+
+    .shop-cta {
+      display: inline-flex;
+      width: 100%;
+      min-height: 44px;
+      margin-top: auto;
+      padding: 0 18px;
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(78, 103, 56, 0.74);
+      color: #f3deb0;
+      font-weight: 600;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .shop-cta svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      margin: 26px 0 30px;
+    }
+
+    .load-more {
+      display: inline-flex;
+      min-width: min(320px, 100%);
+      min-height: 52px;
+      padding: 0 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #f3deb0;
+      font: inherit;
+      font-weight: 700;
+      background: rgba(7, 21, 10, 0.84);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+      cursor: pointer;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .load-more:hover,
+    .load-more:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--gold-bright);
+      background: rgba(21, 44, 22, 0.9);
+      outline: none;
+    }
+
+    .load-more svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .load-more[hidden] {
+      display: none;
+    }
+
+    .trust-bar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: hidden;
+      margin: 18px auto 28px;
+      border: 1px solid rgba(205, 183, 122, 0.66);
+      border-radius: 8px;
+      background: rgba(5, 17, 9, 0.84);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    .trust-item {
+      min-height: 150px;
+      padding: 24px 20px 22px;
+      border-right: 1px solid rgba(205, 183, 122, 0.18);
+      text-align: center;
+    }
+
+    .trust-item:last-child {
+      border-right: 0;
+    }
+
+    .trust-item svg {
+      width: 42px;
+      height: 42px;
+      color: var(--gold);
+    }
+
+    .trust-title {
+      margin: 10px 0 8px;
+      color: #f4dfb4;
+      font-weight: 700;
+    }
+
+    .trust-copy {
+      margin: 0;
+      color: #efe4c6;
+      font-size: 0.91rem;
+      line-height: 1.45;
+    }
+
+    footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      color: #f1dca9;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+    }
+
+    footer svg {
+      width: 24px;
+      height: 24px;
+      color: var(--gold);
+    }
+
+    @media (max-width: 980px) {
+      .site {
+        width: min(100%, 760px);
+      }
+
+      .hero {
+        min-height: 288px;
+      }
+
+      .shop-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .trust-bar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .trust-item:nth-child(2) {
+        border-right: 1px solid rgba(205, 183, 122, 0.18);
+      }
+
+      .trust-item:nth-child(-n + 2) {
+        border-bottom: 0;
+      }
+    }
+
+    @media (max-width: 620px) {
+      body::before {
+        background-image: url("assets/plant-background-clean.png");
+        background-size: auto 100%;
+        background-position: top center;
+      }
+
+      .site {
+        padding: 20px 10px 18px;
+      }
+
+      .hero {
+        min-height: 224px;
+      }
+
+      .hero-inner {
+        padding-top: 10px;
+      }
+
+      .hero-bar {
+        margin-top: 6px;
+        padding: 8px 10px 9px;
+        background: rgba(2, 10, 5, 0.6);
+      }
+
+      .hero-bar h2 {
+        font-size: clamp(1.05rem, 5.4vw, 1.45rem);
+        line-height: 1.08;
+      }
+
+      .hero-bar p {
+        margin-top: 3px;
+        font-size: clamp(0.78rem, 3.6vw, 0.98rem);
+        line-height: 1.2;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+      }
+
+      h1 {
+        font-size: clamp(3.7rem, 19vw, 5.2rem);
+      }
+
+      .subtitle {
+        margin-top: 14px;
+        font-size: 0.76rem;
+        letter-spacing: 0.15em;
+      }
+
+      .shops::before {
+        inset: 0 -10px -28px;
+        background: rgba(2, 10, 5, 0.66);
+      }
+
+      .shop-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .shop-card {
+        min-height: 210px;
+        padding: 10px 8px 9px;
+      }
+
+      .shop-heart {
+        top: 8px;
+        right: 8px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .shop-like-count {
+        top: 29px;
+        right: 7px;
+        min-width: 23px;
+        font-size: 0.66rem;
+      }
+
+      .shop-mark {
+        width: 62px;
+        height: 62px;
+        margin-bottom: 8px;
+        font-size: 1.16rem;
+      }
+
+      .shop-title {
+        min-height: 36px;
+        font-size: clamp(1.32rem, 6.5vw, 1.72rem);
+        line-height: 0.98;
+      }
+
+      .shop-tags {
+        min-height: 34px;
+        margin-top: 5px;
+        font-size: 0.68rem;
+        line-height: 1.25;
+      }
+
+      .shop-desc {
+        margin: 5px 0 8px;
+        font-size: 0.68rem;
+        line-height: 1.3;
+      }
+
+      .shop-cta {
+        min-height: 31px;
+        padding: 0 8px;
+        gap: 6px;
+        font-size: 0.73rem;
+      }
+
+      .shop-cta svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .actions {
+        margin: 16px 0 18px;
+      }
+
+      .load-more {
+        min-height: 42px;
+        padding: 0 18px;
+        font-size: 0.86rem;
+      }
+
+      .trust-bar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 12px auto 16px;
+      }
+
+      .trust-item,
+      .trust-item:nth-child(2),
+      .trust-item:nth-child(-n + 2) {
+        min-height: 84px;
+        padding: 9px 4px 8px;
+        border-right: 1px solid rgba(205, 183, 122, 0.18);
+        border-bottom: 0;
+      }
+
+      .trust-item:last-child {
+        border-right: 0;
+      }
+
+      .trust-item svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .trust-title {
+        margin: 5px 0 3px;
+        font-size: 0.61rem;
+        line-height: 1.12;
+      }
+
+      .trust-copy {
+        font-size: 0.52rem;
+        line-height: 1.18;
+      }
+
+      footer {
+        gap: 6px;
+        font-size: 0.72rem;
+      }
+
+      footer svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .site {
+        padding: 16px 8px 16px;
+      }
+
+      .hero {
+        min-height: 196px;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+      }
+
+      h1 {
+        font-size: clamp(3.05rem, 18vw, 4.35rem);
+      }
+
+      .subtitle {
+        margin-top: 10px;
+        font-size: 0.66rem;
+        letter-spacing: 0.13em;
+      }
+
+      .ornament {
+        margin-top: 12px;
+      }
+
+      .hero-bar {
+        padding: 7px 8px 8px;
+      }
+
+      .hero-bar h2 {
+        font-size: clamp(0.92rem, 4.8vw, 1.16rem);
+      }
+
+      .hero-bar p {
+        font-size: clamp(0.66rem, 3.4vw, 0.82rem);
+      }
+
+      .shop-grid {
+        gap: 7px;
+      }
+
+      .shop-card {
+        min-height: 176px;
+        padding: 8px 6px 7px;
+      }
+
+      .shop-heart {
+        top: 7px;
+        right: 7px;
+        width: 18px;
+        height: 18px;
+      }
+
+      .shop-like-count {
+        top: 26px;
+        right: 6px;
+        font-size: 0.6rem;
+      }
+
+      .shop-mark {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 6px;
+        font-size: 0.98rem;
+      }
+
+      .shop-title {
+        min-height: 30px;
+        font-size: clamp(1.08rem, 6vw, 1.36rem);
+      }
+
+      .shop-tags {
+        min-height: 27px;
+        margin-top: 4px;
+        font-size: 0.58rem;
+        line-height: 1.18;
+      }
+
+      .shop-desc {
+        display: -webkit-box;
+        overflow: hidden;
+        margin: 4px 0 6px;
+        font-size: 0.58rem;
+        line-height: 1.2;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+
+      .shop-cta {
+        min-height: 27px;
+        padding: 0 6px;
+        font-size: 0.64rem;
+      }
+
+      .trust-item,
+      .trust-item:nth-child(2),
+      .trust-item:nth-child(-n + 2) {
+        min-height: 68px;
+        padding: 7px 3px 6px;
+      }
+
+      .trust-item svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .trust-title {
+        font-size: 0.5rem;
+      }
+
+      .trust-copy {
+        font-size: 0.43rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <header class="hero" aria-label="Plant Lover">
+      <div class="hero-inner">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="currentColor" role="img">
+            <path d="M31.5 3.5C19.2 8.8 12.8 18.2 12.8 31c0 15 10.7 24.2 18.9 29.7C40.3 55.2 51.2 46 51.2 31c0-12.8-6.7-22.2-19.7-27.5Zm-1.7 9.7v12.2l-8.9-8.9a28 28 0 0 1 8.9-3.3Zm4.4 0a28 28 0 0 1 8.9 3.3l-8.9 8.9V13.2ZM16.9 28.7a24.7 24.7 0 0 1 1.7-7.4l11.2 11.2v8.1L16.9 28.7Zm30.2 0L34.2 40.6v-8.1l11.2-11.2a24.7 24.7 0 0 1 1.7 7.4ZM19 37.4l10.8 10v7.5A34.1 34.1 0 0 1 19 37.4Zm15.2 17.5v-7.5l10.8-10a34.1 34.1 0 0 1-10.8 17.5Z"/>
+          </svg>
+        </span>
+        <h1>Plant Lover</h1>
+        <p class="subtitle">Bring Nature Home</p>
+        <div class="ornament" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 20V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M12 10c-4.6 0-7-2.7-7-6 4.2 0 7 2.2 7 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M12 14c4.6 0 7-2.7 7-6-4.2 0-7 2.2-7 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="hero-bar">
+        <h2>Shops für seltene, tropische und normale Zimmerpflanzen &amp; Zubeh&ouml;r sowie TC</h2>
+        <p>Nette Kontakte, zuverl&auml;ssiger Top-Versand, egal ob Sommer oder Winter.</p>
+      </div>
+    </header>
+
+    <main class="shops">
+      <h2 class="sr-only">Ausgesuchte Shops</h2>
+      <div class="shop-grid" aria-live="polite">
+        <a class="shop-card" data-shop-card href="https://www.instagram.com/grenzland_dschungel?igsh=MTN1NzNweXY3cnllNQ==" target="_blank" rel="noopener noreferrer" aria-label="Grenzland Dschungel oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">GD</span>
+          <h3 class="shop-title">Grenzland Dschungel</h3>
+          <p class="shop-tags">Instagram &bull; Pflanzen &bull; Aroids</p>
+          <p class="shop-desc">Direkt zum gr&uuml;nen Dschungel-Feed und den aktuellen Angeboten.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card href="https://variegated-stingray.com/" target="_blank" rel="noopener noreferrer" aria-label="Variegated Stingray oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">VS</span>
+          <h3 class="shop-title">Variegated Stingray</h3>
+          <p class="shop-tags">Rare Plants &bull; Variegation &bull; Shop</p>
+          <p class="shop-desc">Seltene Blattzeichnungen und besondere Pflanzen-Funde.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card href="https://www.skinkplants.ch/" target="_blank" rel="noopener noreferrer" aria-label="Skinkplants oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">SP</span>
+          <h3 class="shop-title">Skinkplants</h3>
+          <p class="shop-tags">Schweiz &bull; Plants &bull; Shop</p>
+          <p class="shop-desc">Pflanzen-Shop mit sauberem Auftritt und feiner Auswahl.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card href="https://secretfoliage.com/de" target="_blank" rel="noopener noreferrer" aria-label="Secret Foliage oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">SF</span>
+          <h3 class="shop-title">Secret Foliage</h3>
+          <p class="shop-tags">Rare Plants &bull; DE &bull; Foliage</p>
+          <p class="shop-desc">Besondere Bl&auml;tter, ruhige Shop-Optik und ausgew&auml;hlte Pflanzen.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card href="https://leafguys.sumupstore.com/" target="_blank" rel="noopener noreferrer" aria-label="Leaf Guys oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">LG</span>
+          <h3 class="shop-title">Leaf Guys</h3>
+          <p class="shop-tags">Plants &bull; SumUp &bull; Shop</p>
+          <p class="shop-desc">Direkter Store f&uuml;r neue Blattlieblinge und Pflanzensch&auml;tze.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card href="https://mg-plants.com/" target="_blank" rel="noopener noreferrer" aria-label="MG Plants oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">MG</span>
+          <h3 class="shop-title">MG Plants</h3>
+          <p class="shop-tags">Plants &bull; Aroids &bull; Shop</p>
+          <p class="shop-desc">Ausgew&auml;hlte Pflanzen f&uuml;r Sammler und echte Plantlover.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card href="https://www.instagram.com/ak_plants_?igsh=MWd4NWUxcjZ5cnczNQ==" target="_blank" rel="noopener noreferrer" aria-label="AK Plants oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">AK</span>
+          <h3 class="shop-title">AK Plants</h3>
+          <p class="shop-tags">Instagram &bull; Plants &bull; Angebote</p>
+          <p class="shop-desc">Aktuelle Pflanzen-Posts und direkte Einblicke in die Auswahl.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card href="https://plantscraper.com/" target="_blank" rel="noopener noreferrer" aria-label="Plantscraper oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">PS</span>
+          <h3 class="shop-title">Plantscraper</h3>
+          <p class="shop-tags">Plants &bull; Shop &bull; Raritaeten</p>
+          <p class="shop-desc">Ein direkter Weg zu besonderen Pflanzen und neuen Finds.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://www.blatt-stahl.com/m%C3%B6bel" target="_blank" rel="noopener noreferrer" aria-label="Blatt Stahl oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">BS</span>
+          <h3 class="shop-title">Blatt Stahl</h3>
+          <p class="shop-tags">Moebel &bull; Pflanzen &bull; Design</p>
+          <p class="shop-desc">Starke Einrichtungsideen f&uuml;r Pflanzen und gr&uuml;ne R&auml;ume.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://smukhi.nl/" target="_blank" rel="noopener noreferrer" aria-label="Smukhi oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">SM</span>
+          <h3 class="shop-title">Smukhi</h3>
+          <p class="shop-tags">Plants &bull; Niederlande &bull; Shop</p>
+          <p class="shop-desc">Pflanzen und sch&ouml;ne Fundst&uuml;cke aus den Niederlanden.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://www.instagram.com/spotty.plants?igsh=MTV6bHl0bnEzOGdodA==" target="_blank" rel="noopener noreferrer" aria-label="SpottyPlants oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">SP</span>
+          <h3 class="shop-title">SpottyPlants</h3>
+          <p class="shop-tags">Instagram &bull; Plants &bull; Spots</p>
+          <p class="shop-desc">Ein Feed f&uuml;r besondere Muster, neue Pflanzen und Updates.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://edelundgruen.de/" target="_blank" rel="noopener noreferrer" aria-label="Edel und Gruen oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">EG</span>
+          <h3 class="shop-title">Edel &amp; Gr&uuml;n</h3>
+          <p class="shop-tags">Deutschland &bull; Pflanzen &bull; Shop</p>
+          <p class="shop-desc">Gr&uuml;ne Auswahl mit edlem Auftritt und direktem Shop-Zugang.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://www.instagram.com/alocasiadreams?igsh=MXdwc3o2cDFoeXp4aQ==" target="_blank" rel="noopener noreferrer" aria-label="Alocasia Dreams oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">AD</span>
+          <h3 class="shop-title">Alocasia Dreams</h3>
+          <p class="shop-tags">Instagram &bull; Alocasia &bull; Plants</p>
+          <p class="shop-desc">F&uuml;r alle, die Alocasien und markante Bl&auml;tter lieben.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://curious-plants.com/de" target="_blank" rel="noopener noreferrer" aria-label="CuriousPlants oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">CP</span>
+          <h3 class="shop-title">CuriousPlants</h3>
+          <p class="shop-tags">Rare Plants &bull; DE &bull; Shop</p>
+          <p class="shop-desc">Curated Pflanzen-Auswahl f&uuml;r neugierige Sammler.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://nordicplantdiary.com/" target="_blank" rel="noopener noreferrer" aria-label="Nordicplantdiary oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">ND</span>
+          <h3 class="shop-title">Nordicplantdiary</h3>
+          <p class="shop-tags">Nordic &bull; Plants &bull; Diary</p>
+          <p class="shop-desc">Nordische Pflanzen-Inspiration mit stilvollem Charakter.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://karteldaun.com/en/?srsltid=AfmBOooQHMfISWyodfSuqS-phYekR6JShlILMqhVsfAJ_Xe05tQ9c1W7" target="_blank" rel="noopener noreferrer" aria-label="KartelDaun oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">KD</span>
+          <h3 class="shop-title">KartelDaun</h3>
+          <p class="shop-tags">Tropical &bull; Plants &bull; Shop</p>
+          <p class="shop-desc">Tropische Pflanzen und spannende internationale Auswahl.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://lunasplants.eu/" target="_blank" rel="noopener noreferrer" aria-label="LunasPlants oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">LP</span>
+          <h3 class="shop-title">LunasPlants</h3>
+          <p class="shop-tags">EU &bull; Plants &bull; Shop</p>
+          <p class="shop-desc">Ein gr&uuml;nes Ziel f&uuml;r neue Lieblingspflanzen in Europa.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://www.instagram.com/jordys.aroids?igsh=dzhpOWNyZ2ZqamMw" target="_blank" rel="noopener noreferrer" aria-label="Jordys Aroids oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">JA</span>
+          <h3 class="shop-title">Jordy&rsquo;s Aroids</h3>
+          <p class="shop-tags">Instagram &bull; Aroids &bull; Plants</p>
+          <p class="shop-desc">Aroid-Fokus, aktuelle Posts und direkte Pflanzen-Updates.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+
+        <a class="shop-card" data-shop-card hidden href="https://plantsbytess.com/" target="_blank" rel="noopener noreferrer" aria-label="Plant.ess oeffnen">
+          <svg class="shop-heart" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span class="shop-mark">PE</span>
+          <h3 class="shop-title">Plant.ess</h3>
+          <p class="shop-tags">Plants &bull; Shop &bull; Essentials</p>
+          <p class="shop-desc">Pflanzen-Auswahl mit direktem Weg in den Shop.</p>
+          <span class="shop-cta">Zum Shop <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </div>
+
+      <div class="actions">
+        <button class="load-more" type="button" data-load-more>
+          Mehr Shops anzeigen
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </main>
+
+    <section class="trust-bar" aria-label="Plant Lover Vorteile">
+      <article class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 21v-5.5M6 15.5C3.8 14.6 2.5 13 2.5 10.7c3.1-.2 5.6 1 6.7 3.4M12 21V9M12 12.5c-2.6-.8-4.4-2.6-4.4-5 3.2-.2 5.8 1.2 6.8 4.1M12 16c3.8-.6 6.3-2.9 6.7-6.7-4-.2-7 1.9-7.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3 class="trust-title">F&uuml;r Pflanzenliebhaber</h3>
+        <p class="trust-copy">Handverlesene Shops f&uuml;r echte Plantlover.</p>
+      </article>
+      <article class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 4.5 7.2v9.1L12 21l7.5-4.7V7.2L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m4.8 7.4 7.2 4.3 7.2-4.3M12 21v-9.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3 class="trust-title">Direkt verbunden</h3>
+        <p class="trust-copy">Jede Kachel f&uuml;hrt sofort zum passenden Shop.</p>
+      </article>
+      <article class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 15.5c2.7 0 4.8-2.2 4.8-4.8V5.2H6.3c-2.7 0-4.8 2.2-4.8 4.8v5.5H7ZM12 19.5c0-4.7 3.8-8.5 8.5-8.5H22v1.5c0 4.7-3.8 8.5-8.5 8.5H12v-1.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 11.2 12 17m5-1 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3 class="trust-title">Mit Liebe ausgew&auml;hlt</h3>
+        <p class="trust-copy">Eine ruhige &Uuml;bersicht statt voller Suche.</p>
+      </article>
+    </section>
+
+    <footer>
+      <span>Plant Lover - Bring Nature Home</span>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21V9M12 13c-4.5 0-7-2.8-7-7 4.5 0 7 2.8 7 7Zm0 3c4.5 0 7-2.8 7-7-4.5 0-7 2.8-7 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </footer>
+  </div>
+
+  <script>
+    const shopGrid = document.querySelector(".shop-grid");
+    const loadMoreButton = document.querySelector("[data-load-more]");
+    const step = 4;
+    const likeStorageKey = "plant-lover-shop-likes";
+    const likesApiUrl = "/.netlify/functions/likes";
+    const initialVisibleCount = 8;
+    let cards = [];
+    let visibleCount = initialVisibleCount;
+    let likes = {};
+
+    try {
+      likes = sanitizeLikesMap(JSON.parse(localStorage.getItem(likeStorageKey) || "{}"));
+    } catch (error) {
+      likes = {};
+    }
+
+    function updateLoadMoreButton() {
+      if (!loadMoreButton) return;
+
+      const remaining = cards.length - visibleCount;
+      if (remaining <= 0) {
+        loadMoreButton.hidden = true;
+        return;
+      }
+
+      loadMoreButton.hidden = false;
+      loadMoreButton.firstChild.nodeValue = remaining >= step
+        ? "Mehr Shops anzeigen "
+        : `Letzte ${remaining} Shops anzeigen `;
+    }
+
+    function sanitizeLikesMap(source) {
+      return Object.entries(source || {}).reduce((result, [key, value]) => {
+        const count = Math.max(0, Math.floor(Number(value) || 0));
+        if (key && count > 0) result[key] = count;
+        return result;
+      }, {});
+    }
+
+    function saveLikes() {
+      try {
+        localStorage.setItem(likeStorageKey, JSON.stringify(likes));
+      } catch (error) {
+        // Browsers can block localStorage; the Netlify API is the important store.
+      }
+    }
+
+    function updateLike(heart, count) {
+      const countBadge = heart.parentElement.querySelector(".shop-like-count");
+
+      heart.classList.toggle("is-liked", count > 0);
+      heart.setAttribute("aria-pressed", count > 0 ? "true" : "false");
+
+      if (countBadge?.classList.contains("shop-like-count")) {
+        countBadge.textContent = `x${count}`;
+        countBadge.classList.toggle("is-visible", count > 0);
+      }
+    }
+
+    function refreshLikes() {
+      cards.forEach((card) => {
+        const heart = card.querySelector(".shop-heart");
+        if (!heart) return;
+        const shopKey = card.dataset.shopId || card.getAttribute("href");
+        updateLike(heart, Number(likes[shopKey]) || 0);
+      });
+    }
+
+    async function loadLiveLikes() {
+      try {
+        const response = await fetch(likesApiUrl, { cache: "no-store" });
+        if (!response.ok) throw new Error("Like-Zahlen konnten nicht geladen werden.");
+
+        const data = await response.json();
+        likes = sanitizeLikesMap(data.likes);
+        saveLikes();
+        refreshLikes();
+      } catch (error) {
+        likes = sanitizeLikesMap(likes);
+        refreshLikes();
+      }
+    }
+
+    async function incrementLike(card, heart, event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const shopKey = card.dataset.shopId || card.getAttribute("href");
+      likes[shopKey] = (Number(likes[shopKey]) || 0) + 1;
+      saveLikes();
+      updateLike(heart, likes[shopKey]);
+
+      try {
+        const response = await fetch(likesApiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ shopKey }),
+        });
+
+        if (!response.ok) throw new Error("Like konnte nicht gespeichert werden.");
+
+        const data = await response.json();
+        likes = sanitizeLikesMap(data.likes);
+        saveLikes();
+        refreshLikes();
+      } catch (error) {
+        // Offline or static-only deploy fallback: keep the optimistic local count visible.
+      }
+    }
+
+    function setupLikes() {
+      cards.forEach((card) => {
+        const heart = card.querySelector(".shop-heart");
+        if (!heart) return;
+
+        const shopName = card.querySelector(".shop-title")?.textContent.trim() || "Shop";
+        heart.setAttribute("role", "button");
+        heart.setAttribute("tabindex", "0");
+        heart.setAttribute("aria-label", `${shopName} liken`);
+        heart.setAttribute("aria-pressed", "false");
+        const shopKey = card.dataset.shopId || card.getAttribute("href");
+        updateLike(heart, Number(likes[shopKey]) || 0);
+
+        heart.addEventListener("click", (event) => incrementLike(card, heart, event));
+        heart.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            incrementLike(card, heart, event);
+          }
+        });
+      });
+    }
+
+    function createShopCard(shop, index) {
+      const card = document.createElement("a");
+      card.className = "shop-card";
+      card.dataset.shopCard = "";
+      card.dataset.shopId = shop.id || shop.url || `shop-${index}`;
+      card.href = shop.url || "#";
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+      card.setAttribute("aria-label", `${shop.name || "Shop"} oeffnen`);
+      card.hidden = index >= visibleCount;
+
+      const heart = document.createElement("span");
+      heart.className = "shop-heart";
+      heart.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.9a5.3 5.3 0 0 0-7.5 0L12 6.2l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5L12 21l8.8-8.6a5.3 5.3 0 0 0 0-7.5Z" stroke="currentColor" stroke-width="1.8"/></svg>';
+
+      const countBadge = document.createElement("span");
+      countBadge.className = "shop-like-count";
+
+      const mark = document.createElement("span");
+      mark.className = "shop-mark";
+      if (shop.logoImage) {
+        mark.classList.add("has-image");
+        mark.style.setProperty("--logo-scale", String(shop.logoScale || 1));
+        mark.style.setProperty("--logo-x", `${shop.logoX || 0}%`);
+        mark.style.setProperty("--logo-y", `${shop.logoY || 0}%`);
+        const image = document.createElement("img");
+        image.src = shop.logoImage;
+        image.alt = "";
+        mark.append(image);
+      } else {
+        mark.textContent = shop.initials || (shop.name || "Shop").slice(0, 2).toUpperCase();
+      }
+
+      const title = document.createElement("h3");
+      title.className = "shop-title";
+      title.textContent = shop.name || "Neuer Shop";
+
+      const tags = document.createElement("p");
+      tags.className = "shop-tags";
+      tags.textContent = shop.tags || "Plants \u2022 Shop";
+
+      const description = document.createElement("p");
+      description.className = "shop-desc";
+      description.textContent = shop.description || "Direkt zum Shop.";
+
+      const cta = document.createElement("span");
+      cta.className = "shop-cta";
+      cta.append(document.createTextNode(shop.ctaLabel || "Zum Shop"));
+      cta.insertAdjacentHTML("beforeend", ' <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+
+      card.append(heart, countBadge, mark, title, tags, description, cta);
+      return card;
+    }
+
+    function renderShops(shops) {
+      if (!Array.isArray(shops) || !shops.length) return;
+
+      visibleCount = Math.min(initialVisibleCount, shops.length);
+      shopGrid.replaceChildren(...shops.map(createShopCard));
+      cards = Array.from(document.querySelectorAll("[data-shop-card]"));
+      setupLikes();
+      updateLoadMoreButton();
+    }
+
+    async function loadShops() {
+      try {
+        const response = await fetch("shops.json", { cache: "no-store" });
+        if (!response.ok) throw new Error("shops.json konnte nicht geladen werden");
+        renderShops(await response.json());
+      } catch (error) {
+        cards = Array.from(document.querySelectorAll("[data-shop-card]"));
+        visibleCount = cards.filter((card) => !card.hidden).length;
+        cards.forEach((card) => {
+          if (!card.querySelector(".shop-like-count")) {
+            const countBadge = document.createElement("span");
+            countBadge.className = "shop-like-count";
+            card.querySelector(".shop-heart")?.after(countBadge);
+          }
+        });
+        setupLikes();
+        updateLoadMoreButton();
+      }
+
+      loadLiveLikes();
+    }
+
+    loadMoreButton.addEventListener("click", () => {
+      const nextVisibleCount = Math.min(visibleCount + step, cards.length);
+
+      cards.slice(visibleCount, nextVisibleCount).forEach((card, index) => {
+        card.hidden = false;
+        card.animate(
+          [
+            { opacity: 0, transform: "translateY(16px)" },
+            { opacity: 1, transform: "translateY(0)" }
+          ],
+          { duration: 260, delay: index * 45, easing: "ease-out" }
+        );
+      });
+
+      visibleCount = nextVisibleCount;
+      updateLoadMoreButton();
+    });
+
+    loadShops();
+  </script>
+</body>
+</html>
