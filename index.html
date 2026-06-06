@@ -1316,5 +1316,65 @@
 
     loadShops();
   </script>
+
+  <!-- Jungle Sound -->
+  <audio id="jungleAudio" loop preload="none" src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Rainforest-sounds.mp3"></audio>
+
+  <button id="soundBtn" aria-label="Sound ein/aus" title="Dschungel-Sound ein/aus" style="
+    position: fixed;
+    bottom: 22px;
+    right: 22px;
+    z-index: 50;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(205,183,122,0.65);
+    background: rgba(5,17,9,0.82);
+    backdrop-filter: blur(10px);
+    color: #cdb77a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+    padding: 0;
+  ">
+    <svg id="soundIconOn" width="20" height="20" viewBox="0 0 24 24" fill="none" style="display:none"><path d="M11 5 6 9H2v6h4l5 4V5ZM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg id="soundIconOff" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M11 5 6 9H2v6h4l5 4V5ZM23 9l-6 6M17 9l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <script>
+    const audio = document.getElementById("jungleAudio");
+    const btn = document.getElementById("soundBtn");
+    const iconOn = document.getElementById("soundIconOn");
+    const iconOff = document.getElementById("soundIconOff");
+    let playing = false;
+
+    function setPlaying(val) {
+      playing = val;
+      iconOn.style.display = val ? "block" : "none";
+      iconOff.style.display = val ? "none" : "block";
+      btn.style.background = val ? "rgba(24,48,28,0.88)" : "rgba(5,17,9,0.82)";
+    }
+
+    btn.addEventListener("click", () => {
+      if (playing) {
+        audio.pause();
+        setPlaying(false);
+      } else {
+        audio.volume = 0.35;
+        audio.play().then(() => setPlaying(true)).catch(() => {});
+      }
+    });
+
+    btn.addEventListener("mouseover", () => { if (!playing) btn.style.transform = "scale(1.1)"; });
+    btn.addEventListener("mouseout", () => { btn.style.transform = "scale(1)"; });
+
+    // Autoplay versuchen
+    window.addEventListener("load", () => {
+      audio.volume = 0.35;
+      audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+    });
+  </script>
 </body>
 </html>
