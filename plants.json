@@ -1,4 +1,19 @@
 {
   "buttonVisible": false,
-  "plants": []
+  "plants": [
+    {
+      "id": "1780773528087",
+      "name": "easr",
+      "from": "fff",
+      "note": "werac",
+      "photo": "/assets/plants/pflanze-1780773529993.png"
+    },
+    {
+      "id": "1780773538384",
+      "name": "",
+      "from": "",
+      "note": "",
+      "photo": ""
+    }
+  ]
 }
