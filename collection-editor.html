@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collection Editor – Plant Lover</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f8ecd0;
+      --muted: #d7c89d;
+      --gold: #cdb77a;
+      --panel: rgba(5, 17, 9, 0.88);
+      --line: rgba(205, 183, 122, 0.5);
+      --button: rgba(71, 103, 59, 0.85);
+      --danger: rgba(142, 47, 56, 0.88);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, system-ui, sans-serif;
+      background: linear-gradient(rgba(2,9,4,0.78), rgba(2,9,4,0.92)),
+        url("assets/plant-background-desktop.png") center / cover fixed;
+    }
+
+    .page {
+      width: min(980px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 52px;
+    }
+
+    header {
+      display: flex;
+      gap: 14px;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 1;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+    button, .link-btn {
+      display: inline-flex;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid rgba(205,183,122,0.4);
+      border-radius: 8px;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: var(--button);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    button:hover, .link-btn:hover { border-color: var(--gold); background: rgba(82,120,66,0.92); }
+    button.danger { background: var(--danger); }
+    button.danger:hover { background: rgba(160,55,65,0.92); }
+    button.secondary { background: rgba(30,55,34,0.8); }
+    button.secondary:hover { background: rgba(40,70,45,0.92); }
+
+    .status {
+      min-height: 26px;
+      margin: 0 0 12px;
+      color: #f4dfb4;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* ── Sichtbarkeits-Toggle ── */
+    .visibility-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      backdrop-filter: blur(8px);
+    }
+
+    .visibility-info h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--gold);
+      margin: 0 0 3px;
+    }
+
+    .visibility-info p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      opacity: 0.75;
+      margin: 0;
+    }
+
+    .toggle-wrap { display: flex; align-items: center; gap: 10px; }
+
+    .toggle-label { font-size: 0.88rem; font-weight: 600; color: var(--muted); }
+
+    .toggle {
+      position: relative;
+      width: 48px; height: 26px;
+      cursor: pointer;
+    }
+
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: rgba(30,55,34,0.7);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      transition: background 0.2s;
+    }
+
+    .toggle input:checked + .toggle-track { background: rgba(71,103,59,0.9); border-color: var(--gold); }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      background: var(--muted);
+      border-radius: 50%;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .toggle input:checked ~ .toggle-thumb {
+      transform: translateX(22px);
+      background: var(--gold);
+    }
+
+    /* ── Plant Liste ── */
+    .plant-list { display: grid; gap: 10px; }
+
+    .plant-row {
+      display: grid;
+      grid-template-columns: 80px minmax(0,1fr) 90px;
+      gap: 12px;
+      padding: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+      align-items: start;
+    }
+
+    /* Foto-Upload */
+    .photo-upload {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .photo-preview {
+      width: 80px; height: 100px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--line);
+      background: rgba(24,48,28,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .photo-preview img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-preview svg { width: 28px; height: 28px; color: var(--gold); opacity: 0.4; }
+
+    .photo-btn {
+      font-size: 0.68rem;
+      min-height: 26px;
+      padding: 0 8px;
+    }
+
+    /* Felder */
+    .fields { display: grid; gap: 8px; }
+
+    .field-group { display: grid; gap: 4px; }
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 7px 10px;
+      background: rgba(4,13,6,0.55);
+      border: 1px solid rgba(205,183,122,0.45);
+      border-radius: 6px;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.88rem;
+      transition: border-color 0.15s;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(10,28,12,0.8);
+    }
+
+    textarea { min-height: 58px; }
+
+    .row-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 2px;
+    }
+
+    .row-actions button { min-height: 32px; font-size: 0.78rem; }
+
+    /* ── Neu-Hinzufügen ── */
+    .add-area {
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .add-area button {
+      font-size: 0.88rem;
+      padding: 0 20px;
+      min-height: 42px;
+    }
+
+    /* ── Vorschau-Link ── */
+    .preview-row {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <h1>Collection Editor</h1>
+        <p class="subtitle">Pflanzenfotoss verwalten · Button ein-/ausblenden</p>
+      </div>
+      <div class="toolbar">
+        <a class="link-btn secondary" href="/my-collection.html" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Vorschau
+        </a>
+        <a class="link-btn secondary" href="/shop-editor.html">
+          Shop Editor
+        </a>
+        <button id="saveBtn" onclick="save()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M17 21v-8H7v8M7 3v5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Speichern
+        </button>
+      </div>
+    </header>
+
+    <p class="status" id="status"></p>
+
+    <!-- Button-Sichtbarkeit -->
+    <div class="visibility-card">
+      <div class="visibility-info">
+        <h3>„My Collection" Button auf Startseite</h3>
+        <p>Schalte den Button ein sobald die Sammlung bereit ist – solange ausgeblendet bleibt die Seite im Aufbau.</p>
+      </div>
+      <div class="toggle-wrap">
+        <span class="toggle-label" id="toggleLabel">Ausgeblendet</span>
+        <label class="toggle" title="Button ein-/ausblenden">
+          <input type="checkbox" id="visibleToggle" onchange="updateToggleLabel()">
+          <div class="toggle-track"></div>
+          <div class="toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Pflanzenliste -->
+    <div class="plant-list" id="plantList"></div>
+
+    <div class="add-area">
+      <button onclick="addPlant()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Neue Pflanze hinzufügen
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let plants = [];
+    let buttonVisible = false;
+
+    const status = document.getElementById("status");
+    const plantList = document.getElementById("plantList");
+    const visibleToggle = document.getElementById("visibleToggle");
+
+    function updateToggleLabel() {
+      document.getElementById("toggleLabel").textContent =
+        visibleToggle.checked ? "Sichtbar" : "Ausgeblendet";
+    }
+
+    function setStatus(msg, ok = true) {
+      status.textContent = msg;
+      status.style.color = ok ? "#a8d89a" : "#e08a8a";
+      setTimeout(() => { status.textContent = ""; }, 3500);
+    }
+
+    function leafPlaceholder() {
+      return `<svg viewBox="0 0 24 24" fill="none" width="28" height="28"><path d="M12 21V9M12 13c-4.5 0-7-2.8-7-7 4.5 0 7 2.8 7 7Zm0 3c4.5 0 7-2.8 7-7-4.5 0-7 2.8-7 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+
+    function renderRow(plant, index) {
+      const row = document.createElement("div");
+      row.className = "plant-row";
+      row.dataset.index = index;
+
+      row.innerHTML = `
+        <div class="photo-upload">
+          <div class="photo-preview" id="preview-${index}">
+            ${plant.photo
+              ? `<img src="${plant.photo}" alt="">`
+              : leafPlaceholder()}
+          </div>
+          <button class="photo-btn secondary" onclick="uploadPhoto(${index})">Foto wählen</button>
+          <input type="file" id="file-${index}" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="handleFile(${index}, this)">
+        </div>
+
+        <div class="fields">
+          <div class="field-group">
+            <label>Pflanzenname</label>
+            <input type="text" placeholder="z. B. Monstera Deliciosa" value="${esc(plant.name)}"
+              oninput="plants[${index}].name = this.value">
+          </div>
+          <div class="field-group">
+            <label>Gekauft bei</label>
+            <input type="text" placeholder="z. B. Grenzland Dschungel" value="${esc(plant.from)}"
+              oninput="plants[${index}].from = this.value">
+          </div>
+          <div class="field-group">
+            <label>Beschreibung / Notiz</label>
+            <textarea placeholder="z. B. Frühling 2025 · seltene Variegation" oninput="plants[${index}].note = this.value">${esc(plant.note)}</textarea>
+          </div>
+        </div>
+
+        <div class="row-actions">
+          <button class="danger" onclick="removePlant(${index})">Löschen</button>
+          ${index > 0 ? `<button class="secondary" onclick="movePlant(${index}, -1)">▲ Hoch</button>` : ""}
+          ${index < plants.length - 1 ? `<button class="secondary" onclick="movePlant(${index}, 1)">▼ Runter</button>` : ""}
+        </div>`;
+
+      return row;
+    }
+
+    function esc(str) {
+      return (str || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+    }
+
+    function render() {
+      plantList.innerHTML = "";
+      plants.forEach((p, i) => plantList.appendChild(renderRow(p, i)));
+    }
+
+    function addPlant() {
+      plants.push({ id: Date.now().toString(), name: "", from: "", note: "", photo: "" });
+      render();
+      plantList.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function removePlant(index) {
+      if (!confirm("Pflanze wirklich löschen?")) return;
+      plants.splice(index, 1);
+      render();
+    }
+
+    function movePlant(index, dir) {
+      const target = index + dir;
+      if (target < 0 || target >= plants.length) return;
+      [plants[index], plants[target]] = [plants[target], plants[index]];
+      render();
+    }
+
+    function uploadPhoto(index) {
+      document.getElementById(`file-${index}`).click();
+    }
+
+    function handleFile(index, input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const dataUrl = e.target.result;
+        try {
+          const res = await fetch("/api/plant-photo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ dataUrl, name: plants[index].name || "pflanze" }),
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error);
+          plants[index].photo = "/" + data.path;
+          const preview = document.getElementById(`preview-${index}`);
+          preview.innerHTML = `<img src="${plants[index].photo}?t=${Date.now()}" alt="">`;
+          setStatus("Foto gespeichert ✓");
+        } catch (err) {
+          setStatus("Fehler: " + err.message, false);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function save() {
+      const data = {
+        buttonVisible: visibleToggle.checked,
+        plants: plants,
+      };
+      try {
+        const res = await fetch("/api/plants", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const result = await res.json();
+        if (!result.ok) throw new Error(result.error);
+        setStatus("Gespeichert ✓ — nach dem Pushen ist es live.");
+      } catch (err) {
+        setStatus("Fehler: " + err.message, false);
+      }
+    }
+
+    // Laden
+    fetch("/plants.json?t=" + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        plants = data.plants || [];
+        buttonVisible = data.buttonVisible || false;
+        visibleToggle.checked = buttonVisible;
+        updateToggleLabel();
+        render();
+      })
+      .catch(() => render());
+  </script>
+</body>
+</html>
