@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Collection Editor – Plant Lover</title>
+  <title>Collection Editor – BlackDiamonds Jungle</title>
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -322,6 +322,11 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         Neue Pflanze hinzufügen
       </button>
+      <button class="secondary" onclick="document.getElementById('bulkInput').click()" style="margin-left:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Mehrere Bilder auf einmal
+      </button>
+      <input type="file" id="bulkInput" accept="image/png,image/jpeg,image/webp" multiple style="display:none" onchange="handleBulk(this)">
     </div>
   </div>
 
@@ -465,6 +470,52 @@
       } catch (err) {
         setStatus("Fehler: " + err.message, false);
       }
+    }
+
+    async function handleBulk(input) {
+      const files = Array.from(input.files);
+      if (!files.length) return;
+      input.value = "";
+
+      setStatus(`${files.length} Bilder werden hochgeladen…`, true);
+
+      // Kacheln sofort anlegen
+      const startIndex = plants.length;
+      files.forEach(() => {
+        plants.push({ id: Date.now().toString() + Math.random(), name: "", from: "", note: "", photo: "" });
+      });
+      render();
+      plantList.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      // Fotos parallel hochladen
+      let done = 0;
+      await Promise.all(files.map(async (file, i) => {
+        const index = startIndex + i;
+        const dataUrl = await new Promise((res, rej) => {
+          const r = new FileReader();
+          r.onload = e => res(e.target.result);
+          r.onerror = rej;
+          r.readAsDataURL(file);
+        });
+        try {
+          const resp = await fetch("/api/plant-photo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ dataUrl, name: "pflanze" }),
+          });
+          const data = await resp.json();
+          if (!data.ok) throw new Error(data.error);
+          plants[index].photo = "/" + data.path;
+          const preview = document.getElementById(`preview-${index}`);
+          if (preview) preview.innerHTML = `<img src="${plants[index].photo}?t=${Date.now()}" alt="">`;
+          done++;
+          setStatus(`${done} / ${files.length} Fotos hochgeladen…`, true);
+        } catch (err) {
+          setStatus("Fehler bei Foto " + (i + 1) + ": " + err.message, false);
+        }
+      }));
+
+      setStatus(`${done} von ${files.length} Fotos hochgeladen ✓ — jetzt Speichern nicht vergessen!`, true);
     }
 
     // Laden

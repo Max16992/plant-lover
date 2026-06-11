@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>QR Poster Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: sans-serif;
+    gap: 20px;
+    padding: 30px 0;
+  }
+
+  .hint {
+    color: #aaa;
+    font-size: 0.85rem;
+    text-align: center;
+    max-width: 500px;
+    line-height: 1.5;
+  }
+
+  .btn {
+    padding: 10px 24px;
+    background: #2d5c35;
+    color: #ead59a;
+    border: 1px solid #cdb77a;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn:hover { background: #3a7040; }
+
+  /* ─── Poster ─── */
+  #poster {
+    position: relative;
+    width: 900px;
+    height: 1200px;
+    background: #0a0a0a;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Hintergrund-Blätter (SVG inline) */
+  #poster svg.bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* Card */
+  .card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px;
+    background: rgba(12,18,12,0.93);
+    border: 1.5px solid rgba(205,183,122,0.7);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 38px 44px 40px;
+    gap: 0;
+  }
+
+  /* Monstera Icon */
+  .card-icon { margin-bottom: 14px; }
+  .card-icon svg { width: 42px; height: 42px; color: #cdb77a; }
+
+  /* Titel */
+  .card-title {
+    font-family: "Dancing Script", "Brush Script MT", cursive;
+    font-size: 3rem;
+    color: #ead59a;
+    line-height: 1.1;
+    margin: 0 0 10px;
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+
+  /* Linie */
+  .card-line {
+    width: 70%;
+    height: 1px;
+    background: rgba(205,183,122,0.5);
+    margin: 8px 0 28px;
+  }
+
+  /* QR Code */
+  #qr {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  #qr canvas, #qr img { border-radius: 4px; }
+
+  /* Monstera im QR-Zentrum */
+  .qr-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px; height: 60px;
+    background: #f5ead0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-center svg { width: 44px; height: 44px; }
+
+  /* Untertitel */
+  .card-sub {
+    margin-top: 26px;
+    font-size: 1.05rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #c8b57a;
+    text-align: center;
+    line-height: 1.55;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 400;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<p class="hint">
+  Das Poster unten ist fertig mit dem neuen QR Code für <strong style="color:#ead59a">blackdiamonds-jungle.netlify.app</strong>.<br>
+  Rechtsklick → "Bild speichern" geht leider nicht für das ganze Poster.<br>
+  Besser: <strong style="color:#ead59a">F12 → Console → Schaltfläche "Poster als PNG herunterladen"</strong> drücken.
+</p>
+
+<button class="btn" onclick="download()">⬇ Poster als PNG herunterladen</button>
+
+<div id="poster">
+  <!-- Hintergrund Blätter SVG -->
+  <svg class="bg" viewBox="0 0 900 1200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Dunkler Hintergrund -->
+    <rect width="900" height="1200" fill="#080e08"/>
+    <!-- Grüne Gradient-Blätter Ecken -->
+    <!-- Oben links - großes Blatt -->
+    <g transform="rotate(-30, 0, 0) translate(-60, -80)">
+      <ellipse cx="200" cy="280" rx="170" ry="260" fill="#1a3d1c" opacity="0.9"/>
+      <ellipse cx="200" cy="280" rx="140" ry="220" fill="#1e4520" opacity="0.7"/>
+      <line x1="200" y1="60" x2="200" y2="500" stroke="#2a5c2c" stroke-width="3" opacity="0.5"/>
+    </g>
+    <!-- Oben links - zweites Blatt -->
+    <g transform="rotate(-55, 50, 100) translate(-20, -120)">
+      <ellipse cx="160" cy="320" rx="130" ry="200" fill="#2d6b2f" opacity="0.75"/>
+    </g>
+    <!-- Oben rechts -->
+    <g transform="rotate(25, 900, 0) translate(680, -100)">
+      <ellipse cx="200" cy="300" rx="180" ry="270" fill="#1a3d1c" opacity="0.9"/>
+      <ellipse cx="180" cy="280" rx="120" ry="200" fill="#1e4520" opacity="0.6"/>
+    </g>
+    <!-- Oben rechts - zweites -->
+    <g transform="rotate(55, 850, 50) translate(700, -60)">
+      <ellipse cx="150" cy="240" rx="110" ry="180" fill="#2d6b2f" opacity="0.7"/>
+    </g>
+    <!-- Unten links -->
+    <g transform="rotate(20, 0, 1200) translate(-80, 850)">
+      <ellipse cx="220" cy="200" rx="200" ry="300" fill="#1a3d1c" opacity="0.95"/>
+      <ellipse cx="200" cy="180" rx="150" ry="240" fill="#1e4520" opacity="0.65"/>
+    </g>
+    <!-- Unten rechts -->
+    <g transform="rotate(-20, 900, 1200) translate(650, 860)">
+      <ellipse cx="180" cy="200" rx="190" ry="290" fill="#1a3d1c" opacity="0.95"/>
+    </g>
+    <!-- Unten mitte-links -->
+    <g transform="rotate(10, 200, 1100) translate(30, 980)">
+      <ellipse cx="150" cy="150" rx="140" ry="200" fill="#2d5c2f" opacity="0.8"/>
+    </g>
+    <!-- Unten mitte-rechts -->
+    <g transform="rotate(-10, 700, 1100) translate(600, 1000)">
+      <ellipse cx="160" cy="130" rx="130" ry="180" fill="#2d5c2f" opacity="0.75"/>
+    </g>
+    <!-- Seitliche Blätter links -->
+    <g transform="rotate(-10, 0, 600) translate(-120, 430)">
+      <ellipse cx="230" cy="180" rx="200" ry="150" fill="#1e4520" opacity="0.8"/>
+    </g>
+    <!-- Seitliche Blätter rechts -->
+    <g transform="rotate(10, 900, 600) translate(700, 450)">
+      <ellipse cx="200" cy="170" rx="190" ry="140" fill="#1e4520" opacity="0.75"/>
+    </g>
+    <!-- Anthurium pink links oben -->
+    <ellipse cx="80" cy="340" rx="55" ry="75" fill="#c75b8a" opacity="0.7" transform="rotate(-20, 80, 340)"/>
+    <ellipse cx="100" cy="360" rx="45" ry="60" fill="#d4729d" opacity="0.5" transform="rotate(-20, 100, 360)"/>
+    <!-- Anthurium pink rechts -->
+    <ellipse cx="830" cy="280" rx="50" ry="70" fill="#c75b8a" opacity="0.65" transform="rotate(15, 830, 280)"/>
+    <!-- Anthurium unten links -->
+    <ellipse cx="120" cy="940" rx="60" ry="82" fill="#b84f7e" opacity="0.75" transform="rotate(20, 120, 940)"/>
+    <!-- Dunkle Überlagerung Mitte für Kontrast -->
+    <radialGradient id="fade" cx="50%" cy="50%" r="45%">
+      <stop offset="0%" stop-color="#080e08" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#080e08" stop-opacity="0"/>
+    </radialGradient>
+    <rect width="900" height="1200" fill="url(#fade)"/>
+  </svg>
+
+  <!-- Karte -->
+  <div class="card">
+    <div class="card-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21V9M12 13c-4.5 0-7-2.8-7-7 4.5 0 7 2.8 7 7Zm0 3c4.5 0 7-2.8 7-7-4.5 0-7 2.8-7 7Z"/>
+      </svg>
+    </div>
+    <div class="card-title">Meine Lieblingsshops</div>
+    <div class="card-line"></div>
+    <div id="qr">
+      <div class="qr-center">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a3d1c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21V9M12 13c-4.5 0-7-2.8-7-7 4.5 0 7 2.8 7 7Zm0 3c4.5 0 7-2.8 7-7-4.5 0-7 2.8-7 7Z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-sub">Tropische Zimmer &amp; TC<br>Pflanzen</div>
+  </div>
+</div>
+
+<script>
+  // QR Code generieren
+  const qrEl = document.getElementById("qr");
+  new QRCode(qrEl, {
+    text: "https://blackdiamonds-jungle.netlify.app",
+    width: 300,
+    height: 300,
+    colorDark: "#1a1a1a",
+    colorLight: "#f5ead0",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+
+  // Download als PNG
+  async function download() {
+    const poster = document.getElementById("poster");
+    // html2canvas via CDN laden falls nötig
+    if (typeof html2canvas === "undefined") {
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+      document.head.appendChild(s);
+      await new Promise(r => s.onload = r);
+    }
+    const canvas = await html2canvas(poster, { scale: 2, useCORS: true, backgroundColor: "#080e08" });
+    const link = document.createElement("a");
+    link.download = "blackdiamonds-jungle-qr-poster.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }
+</script>
+</body>
+</html>

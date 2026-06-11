@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>QR Code Generator – BlackDiamonds Jungle</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<style>
+  body {
+    margin: 0; background: #1a1a1a;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 100vh; gap: 20px; padding: 30px 0;
+    font-family: sans-serif;
+  }
+  canvas { border-radius: 12px; }
+  .btn {
+    padding: 12px 28px;
+    background: #2d5c35; color: #ead59a;
+    border: 1px solid #cdb77a; border-radius: 8px;
+    font-size: 1rem; cursor: pointer; font-weight: 700;
+  }
+  .btn:hover { background: #3a7040; }
+  p { color: #aaa; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<p>QR Code für <strong style="color:#ead59a">blackdiamonds-jungle.netlify.app</strong></p>
+<canvas id="qr"></canvas>
+<button class="btn" onclick="download()">⬇ Als PNG herunterladen</button>
+
+<script>
+const URL = "https://blackdiamonds-jungle.netlify.app";
+const BG   = "#f0e8d6";   // creme
+const FG   = "#1a3d1c";   // dunkelgrün
+const SIZE = 1080;         // Output-Größe in Pixel
+const PAD  = 0.06;         // Rand-Anteil
+
+// QR Matrix erzeugen (Error Correction H = höchste, damit Logo in Mitte passt)
+const qr = qrcode(0, "H");
+qr.addData(URL);
+qr.make();
+const N = qr.getModuleCount(); // Anzahl Module (z.B. 33)
+
+const canvas = document.getElementById("qr");
+canvas.width  = SIZE;
+canvas.height = SIZE;
+const ctx = canvas.getContext("2d");
+
+const pad   = Math.round(SIZE * PAD);
+const inner = SIZE - 2 * pad;
+const cell  = inner / N;
+const r     = cell * 0.46; // Radius der runden Punkte
+
+// Hintergrund
+ctx.fillStyle = BG;
+ctx.fillRect(0, 0, SIZE, SIZE);
+
+// Hilfsfunktion: ist ein Modul Teil der 3 Finder-Pattern?
+function isFinder(row, col) {
+  const m = N - 1;
+  return (row < 7 && col < 7) ||       // oben-links
+         (row < 7 && col > m - 7) ||   // oben-rechts
+         (row > m - 7 && col < 7);     // unten-links
+}
+
+// Hilfsfunktion: runde Ecken für Rechteck
+function roundRect(ctx, x, y, w, h, rad) {
+  ctx.beginPath();
+  ctx.moveTo(x + rad, y);
+  ctx.arcTo(x + w, y,     x + w, y + h, rad);
+  ctx.arcTo(x + w, y + h, x,     y + h, rad);
+  ctx.arcTo(x,     y + h, x,     y,     rad);
+  ctx.arcTo(x,     y,     x + w, y,     rad);
+  ctx.closePath();
+}
+
+// 1. Datenpunkte als Kreise zeichnen (Finder ausklammern)
+ctx.fillStyle = FG;
+for (let row = 0; row < N; row++) {
+  for (let col = 0; col < N; col++) {
+    if (qr.isDark(row, col) && !isFinder(row, col)) {
+      const cx = pad + col * cell + cell / 2;
+      const cy = pad + row * cell + cell / 2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+// 2. Finder-Pattern zeichnen (wie im Original: abgerundete Ecken, kein Rahmen)
+function drawFinder(startRow, startCol) {
+  const x = pad + startCol * cell;
+  const y = pad + startRow * cell;
+  const sz = cell * 7;
+  const outerR = cell * 1.1;
+  const innerR = cell * 0.5;
+
+  // Äußeres abgerundetes Quadrat (gefüllt)
+  ctx.fillStyle = FG;
+  roundRect(ctx, x, y, sz, sz, outerR);
+  ctx.fill();
+
+  // Weißes Innenfeld
+  ctx.fillStyle = BG;
+  roundRect(ctx, x + cell, y + cell, sz - 2*cell, sz - 2*cell, innerR);
+  ctx.fill();
+
+  // Inneres Quadrat (3×3 Module, minimal abgerundet)
+  ctx.fillStyle = FG;
+  roundRect(ctx, x + 2*cell, y + 2*cell, sz - 4*cell, sz - 4*cell, innerR);
+  ctx.fill();
+}
+
+drawFinder(0,     0    );  // oben-links
+drawFinder(0,     N - 7);  // oben-rechts
+drawFinder(N - 7, 0    );  // unten-links
+
+// 3. Monstera-Blatt SVG im Zentrum
+const centerSize = cell * 7;
+const cx = SIZE / 2 - centerSize / 2;
+const cy = SIZE / 2 - centerSize / 2;
+
+// Hintergrund-Kästchen (creme, leicht dunkler)
+ctx.fillStyle = "rgba(220, 210, 190, 0.9)";
+ctx.fillRect(cx, cy, centerSize, centerSize);
+
+// Monstera als SVG → Image
+const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="${Math.round(centerSize)}" height="${Math.round(centerSize)}">
+  <rect width="200" height="200" fill="#ddd4be" opacity="0.85"/>
+  <!-- Monstera Blatt -->
+  <g transform="translate(100,108) scale(0.82)">
+    <!-- Hauptblatt-Form -->
+    <path d="
+      M0,-95
+      C18,-80 42,-60 52,-30
+      C58,-12 55,10 48,26
+      C62,20 76,12 84,0
+      C90,-10 88,-28 80,-38
+      C96,-28 104,-8 98,14
+      C92,34 76,48 60,58
+      C70,62 80,60 88,52
+      C82,70 66,82 46,88
+      C54,95 60,92 66,88
+      C58,102 42,110 22,112
+      C28,118 36,116 42,114
+      C32,124 14,128 -2,126
+      C4,132 12,132 18,130
+      C6,140 -14,142 -30,136
+      C-20,144 -10,144 -2,142
+      C-16,150 -36,148 -50,138
+      C-42,148 -32,150 -22,148
+      C-38,154 -58,148 -68,134
+      C-62,146 -50,150 -40,148
+      C-58,152 -76,140 -80,122
+      C-76,136 -64,142 -54,140
+      C-74,138 -86,118 -82,96
+      C-80,110 -68,118 -56,114
+      C-74,106 -80,82 -70,60
+      C-68,74 -56,82 -44,78
+      C-58,62 -58,34 -44,14
+      C-42,28 -30,36 -18,34
+      C-28,16 -22,-14 -6,-34
+      C-6,-20 2,-8 12,-4
+      C4,-24 2,-56 0,-95
+      Z
+    " fill="#1a3d1c" opacity="0.95"/>
+    <!-- Blattadern / Einschnitte heller -->
+    <path d="M0,-80 C4,-40 6,0 2,50 C-2,80 -8,100 -12,112" fill="none" stroke="#2d5c2f" stroke-width="2.5" opacity="0.6"/>
+    <path d="M12,-4 C26,10 38,30 44,54 C48,70 46,88 40,104" fill="none" stroke="#2d5c2f" stroke-width="2" opacity="0.5"/>
+    <path d="M-18,34 C-20,50 -18,68 -14,88 C-10,104 -8,116 -10,126" fill="none" stroke="#2d5c2f" stroke-width="2" opacity="0.5"/>
+    <!-- Ausschnitte im Blatt (Monstera-typisch) -->
+    <path d="M28,8 C34,22 36,38 32,52" fill="none" stroke="#ddd4be" stroke-width="8" opacity="0.7" stroke-linecap="round"/>
+    <path d="M-28,48 C-30,60 -28,72 -22,82" fill="none" stroke="#ddd4be" stroke-width="8" opacity="0.7" stroke-linecap="round"/>
+    <path d="M42,52 C46,64 44,78 38,90" fill="none" stroke="#ddd4be" stroke-width="6" opacity="0.65" stroke-linecap="round"/>
+    <path d="M-44,84 C-44,96 -40,106 -34,114" fill="none" stroke="#ddd4be" stroke-width="6" opacity="0.65" stroke-linecap="round"/>
+    <!-- Stiel -->
+    <path d="M-4,120 C-6,135 -4,150 0,160" fill="none" stroke="#1a3d1c" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>`;
+
+const blob = new Blob([svgStr], {type: "image/svg+xml"});
+const url  = URL.createObjectURL(blob);
+const img  = new Image();
+img.onload = () => {
+  ctx.drawImage(img, cx, cy, centerSize, centerSize);
+  URL.revokeObjectURL(url);
+};
+img.src = url;
+
+function download() {
+  const link = document.createElement("a");
+  link.download = "blackdiamonds-jungle-qr.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+}
+</script>
+</body>
+</html>

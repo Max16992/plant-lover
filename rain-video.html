@@ -1,0 +1,533 @@
+﻿<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlackDiamonds Jungle Regenvideo</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #041006;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #041006;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .controls {
+      position: fixed;
+      z-index: 2;
+      left: 50%;
+      bottom: 18px;
+      display: flex;
+      max-width: calc(100vw - 24px);
+      padding: 8px;
+      border: 1px solid rgba(231, 209, 151, 0.42);
+      border-radius: 999px;
+      align-items: center;
+      gap: 8px;
+      background: rgba(3, 13, 6, 0.72);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+      backdrop-filter: blur(14px);
+      transform: translateX(-50%);
+    }
+
+    button,
+    .download {
+      display: inline-flex;
+      min-height: 38px;
+      padding: 0 16px;
+      border: 1px solid rgba(231, 209, 151, 0.5);
+      border-radius: 999px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #f4dfb4;
+      background: rgba(15, 41, 20, 0.86);
+      font: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    button:hover,
+    button:focus-visible,
+    .download:hover,
+    .download:focus-visible {
+      border-color: #f5e3b5;
+      background: rgba(30, 61, 29, 0.92);
+      outline: none;
+    }
+
+    button[disabled] {
+      opacity: 0.58;
+      cursor: wait;
+    }
+
+    .status {
+      min-width: 88px;
+      color: rgba(246, 228, 183, 0.78);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 520px) {
+      .controls {
+        bottom: 12px;
+        width: calc(100vw - 18px);
+        border-radius: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      button,
+      .download {
+        min-height: 34px;
+        padding: 0 11px;
+        font-size: 0.72rem;
+      }
+
+      .status {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="BlackDiamonds Jungle Regenvideo">
+    <canvas id="scene"></canvas>
+    <div class="controls">
+      <button type="button" id="pauseButton">Pause</button>
+      <button type="button" id="recordButton">12s aufnehmen</button>
+      <a class="download" id="downloadLink" hidden download="blackdiamonds-jungle-rain-video.webm">Download WebM</a>
+      <span class="status" id="statusText">Bereit</span>
+    </div>
+  </main>
+
+  <script>
+    const canvas = document.querySelector("#scene");
+    const ctx = canvas.getContext("2d", { alpha: false });
+    const pauseButton = document.querySelector("#pauseButton");
+    const recordButton = document.querySelector("#recordButton");
+    const downloadLink = document.querySelector("#downloadLink");
+    const statusText = document.querySelector("#statusText");
+
+    const desktopImage = new Image();
+    const mobileImage = new Image();
+    desktopImage.src = "assets/plant-background-desktop.png";
+    mobileImage.src = "assets/plant-background-clean.png";
+
+    let width = 1;
+    let height = 1;
+    let dpr = 1;
+    let running = true;
+    let lastTime = performance.now();
+    let hitPulse = 0;
+    let recorder = null;
+    let chunks = [];
+
+    const rain = [];
+    const beads = [];
+    const impacts = [];
+    const glints = [];
+    const leafZones = [
+      { x: [0.02, 0.32], y: [0.06, 0.92], drift: 0.32 },
+      { x: [0.68, 0.98], y: [0.04, 0.9], drift: -0.28 },
+      { x: [0.34, 0.66], y: [0.68, 0.98], drift: 0.08 },
+      { x: [0.08, 0.94], y: [0.02, 0.18], drift: 0.18 },
+    ];
+
+    function random(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function chooseZone() {
+      return leafZones[Math.floor(Math.random() * leafZones.length)];
+    }
+
+    function resetRainDrop(drop, firstRun = false) {
+      drop.x = random(-width * 0.08, width * 1.08);
+      drop.y = firstRun ? random(-height, height) : random(-height * 0.24, -20);
+      drop.speed = random(760, 1220);
+      drop.length = random(16, 34);
+      drop.alpha = random(0.16, 0.42);
+      drop.drift = random(-92, -42);
+    }
+
+    function resetBead(bead, firstRun = false) {
+      const zone = chooseZone();
+      bead.x = random(zone.x[0], zone.x[1]) * width;
+      bead.y = firstRun ? random(zone.y[0], zone.y[1]) * height : random(zone.y[0], zone.y[0] + 0.12) * height;
+      bead.baseX = bead.x;
+      bead.size = random(2.2, 5.8);
+      bead.speed = random(24, 74);
+      bead.alpha = random(0.42, 0.78);
+      bead.drift = zone.drift * random(18, 52);
+      bead.wiggle = random(0.8, 2.8);
+      bead.age = random(0, 10);
+      bead.trail = [];
+      bead.zone = zone;
+    }
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = Math.max(1, Math.floor(window.innerWidth));
+      height = Math.max(1, Math.floor(window.innerHeight));
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      rain.length = 0;
+      beads.length = 0;
+      for (let i = 0; i < Math.round(width * height / 4200); i += 1) {
+        const drop = {};
+        resetRainDrop(drop, true);
+        rain.push(drop);
+      }
+      for (let i = 0; i < Math.round(width * height / 22000); i += 1) {
+        const bead = {};
+        resetBead(bead, true);
+        beads.push(bead);
+      }
+    }
+
+    function activeImage() {
+      return width / height < 0.82 ? mobileImage : desktopImage;
+    }
+
+    function coverRect(image) {
+      const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+      const drawWidth = image.naturalWidth * scale;
+      const drawHeight = image.naturalHeight * scale;
+      return {
+        x: (width - drawWidth) / 2,
+        y: (height - drawHeight) / 2,
+        width: drawWidth,
+        height: drawHeight,
+        scale,
+      };
+    }
+
+    function drawBackground(time) {
+      const image = activeImage();
+      if (!image.complete || !image.naturalWidth) {
+        ctx.fillStyle = "#041006";
+        ctx.fillRect(0, 0, width, height);
+        return;
+      }
+
+      const rect = coverRect(image);
+      const sourceX = Math.max(0, -rect.x / rect.scale);
+      const sourceY = Math.max(0, -rect.y / rect.scale);
+      const sourceWidth = Math.min(image.naturalWidth - sourceX, width / rect.scale);
+      const visibleHeight = Math.min(image.naturalHeight - sourceY, height / rect.scale);
+      const sliceHeight = Math.max(3, Math.round(5 / rect.scale));
+      const edgeGlow = ctx.createRadialGradient(width * 0.5, height * 0.2, 0, width * 0.5, height * 0.45, height * 0.86);
+      const sway = 1.4 + hitPulse * 5.2;
+
+      ctx.fillStyle = "#041006";
+      ctx.fillRect(0, 0, width, height);
+
+      for (let sourceSliceY = 0; sourceSliceY < visibleHeight; sourceSliceY += sliceHeight) {
+        const normalizedY = sourceSliceY / visibleHeight;
+        const destY = sourceSliceY * rect.scale;
+        const leafWeight = Math.min(1, Math.abs(normalizedY - 0.5) * 1.8 + 0.2);
+        const dx = (
+          Math.sin(time * 0.00055 + normalizedY * 14) * sway +
+          Math.sin(time * 0.00088 + normalizedY * 27) * 0.72
+        ) * leafWeight;
+        const dy = Math.sin(time * 0.00042 + normalizedY * 18) * 0.55 * leafWeight;
+
+        ctx.drawImage(
+          image,
+          sourceX,
+          sourceY + sourceSliceY,
+          sourceWidth,
+          Math.min(sliceHeight + 1, visibleHeight - sourceSliceY),
+          dx,
+          destY + dy,
+          width + 2,
+          Math.min(sliceHeight * rect.scale + 2, height - destY + 2)
+        );
+      }
+
+      ctx.fillStyle = "rgba(1, 8, 4, 0.18)";
+      ctx.fillRect(0, 0, width, height);
+      edgeGlow.addColorStop(0, "rgba(255, 248, 210, 0.16)");
+      edgeGlow.addColorStop(0.45, "rgba(29, 52, 22, 0.05)");
+      edgeGlow.addColorStop(1, "rgba(1, 6, 3, 0.38)");
+      ctx.fillStyle = edgeGlow;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function addImpact() {
+      const zone = chooseZone();
+      impacts.push({
+        x: random(zone.x[0], zone.x[1]) * width,
+        y: random(zone.y[0], zone.y[1]) * height,
+        radius: 0,
+        alpha: random(0.28, 0.55),
+      });
+      hitPulse = Math.min(1, hitPulse + 0.28);
+    }
+
+    function drawRain(delta, time) {
+      ctx.save();
+      ctx.lineCap = "round";
+
+      for (const drop of rain) {
+        drop.x += drop.drift * delta;
+        drop.y += drop.speed * delta;
+
+        if (drop.y > height + 60 || drop.x < -width * 0.16) {
+          resetRainDrop(drop);
+          if (Math.random() < 0.42) addImpact();
+        }
+
+        const shine = 0.7 + Math.sin(time * 0.004 + drop.x) * 0.3;
+        ctx.strokeStyle = `rgba(215, 235, 218, ${drop.alpha * shine})`;
+        ctx.lineWidth = random(0.7, 1.4);
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x - drop.length * 0.28, drop.y + drop.length);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function drawBeads(delta, time) {
+      ctx.save();
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      for (const bead of beads) {
+        bead.age += delta;
+        bead.trail.unshift({ x: bead.x, y: bead.y });
+        bead.trail.length = Math.min(bead.trail.length, 18);
+        bead.x += (Math.sin(bead.age * bead.wiggle) * 8 + bead.drift) * delta;
+        bead.y += bead.speed * delta * (0.8 + Math.sin(bead.age * 1.9) * 0.18);
+
+        if (
+          bead.y > height * (bead.zone.y[1] + 0.1) ||
+          bead.x < -40 ||
+          bead.x > width + 40 ||
+          bead.trail.length < 2
+        ) {
+          resetBead(bead);
+          continue;
+        }
+
+        const trail = ctx.createLinearGradient(bead.x, bead.y - 80, bead.x, bead.y);
+        trail.addColorStop(0, "rgba(220, 245, 230, 0)");
+        trail.addColorStop(0.72, `rgba(225, 248, 233, ${bead.alpha * 0.18})`);
+        trail.addColorStop(1, `rgba(255, 255, 245, ${bead.alpha * 0.52})`);
+        ctx.strokeStyle = trail;
+        ctx.lineWidth = Math.max(1, bead.size * 0.62);
+        ctx.beginPath();
+        ctx.moveTo(bead.trail[0].x, bead.trail[0].y);
+        for (let i = 1; i < bead.trail.length; i += 1) {
+          const point = bead.trail[i];
+          ctx.lineTo(point.x, point.y);
+        }
+        ctx.stroke();
+
+        const dropGradient = ctx.createRadialGradient(
+          bead.x - bead.size * 0.32,
+          bead.y - bead.size * 0.36,
+          0,
+          bead.x,
+          bead.y,
+          bead.size * 1.9
+        );
+        dropGradient.addColorStop(0, `rgba(255, 255, 250, ${bead.alpha})`);
+        dropGradient.addColorStop(0.32, `rgba(198, 230, 211, ${bead.alpha * 0.58})`);
+        dropGradient.addColorStop(1, "rgba(96, 139, 104, 0)");
+        ctx.fillStyle = dropGradient;
+        ctx.beginPath();
+        ctx.ellipse(bead.x, bead.y, bead.size * 0.74, bead.size * 1.24, 0.18, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    function drawImpacts(delta) {
+      ctx.save();
+      ctx.lineWidth = 1.2;
+
+      for (let i = impacts.length - 1; i >= 0; i -= 1) {
+        const impact = impacts[i];
+        impact.radius += 52 * delta;
+        impact.alpha -= 0.74 * delta;
+
+        if (impact.alpha <= 0) {
+          impacts.splice(i, 1);
+          continue;
+        }
+
+        ctx.strokeStyle = `rgba(238, 255, 236, ${impact.alpha})`;
+        ctx.beginPath();
+        ctx.ellipse(impact.x, impact.y, impact.radius * 1.18, impact.radius * 0.46, -0.18, 0, Math.PI * 2);
+        ctx.stroke();
+
+        if (Math.random() < 0.16) {
+          glints.push({
+            x: impact.x + random(-12, 12),
+            y: impact.y + random(-8, 8),
+            life: 0.36,
+            size: random(1.2, 3.8),
+          });
+        }
+      }
+
+      ctx.restore();
+    }
+
+    function drawGlints(delta) {
+      ctx.save();
+      for (let i = glints.length - 1; i >= 0; i -= 1) {
+        const glint = glints[i];
+        glint.life -= delta;
+        glint.y += 20 * delta;
+
+        if (glint.life <= 0) {
+          glints.splice(i, 1);
+          continue;
+        }
+
+        ctx.fillStyle = `rgba(255, 255, 240, ${glint.life * 1.8})`;
+        ctx.beginPath();
+        ctx.arc(glint.x, glint.y, glint.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawMist(time) {
+      const mist = ctx.createLinearGradient(0, 0, 0, height);
+      mist.addColorStop(0, "rgba(216, 238, 211, 0.09)");
+      mist.addColorStop(0.5, "rgba(255, 255, 220, 0.025)");
+      mist.addColorStop(1, "rgba(3, 10, 5, 0.22)");
+      ctx.fillStyle = mist;
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.globalCompositeOperation = "screen";
+      ctx.fillStyle = `rgba(210, 238, 218, ${0.035 + Math.sin(time * 0.0007) * 0.012})`;
+      ctx.fillRect(0, 0, width, height);
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    function frame(time) {
+      const delta = Math.min(0.05, (time - lastTime) / 1000 || 0.016);
+      lastTime = time;
+
+      if (running) {
+        hitPulse = Math.max(0, hitPulse - delta * 1.65);
+        drawBackground(time);
+        drawMist(time);
+        drawRain(delta, time);
+        drawImpacts(delta);
+        drawBeads(delta, time);
+        drawGlints(delta);
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    function bestMimeType() {
+      const options = [
+        "video/webm;codecs=vp9",
+        "video/webm;codecs=vp8",
+        "video/webm",
+      ];
+
+      return options.find((type) => MediaRecorder.isTypeSupported(type)) || "";
+    }
+
+    function stopRecording() {
+      if (recorder && recorder.state !== "inactive") {
+        recorder.stop();
+      }
+    }
+
+    function startRecording() {
+      if (!canvas.captureStream || !window.MediaRecorder) {
+        statusText.textContent = "Nicht unterstuetzt";
+        return;
+      }
+
+      chunks = [];
+      downloadLink.hidden = true;
+      recordButton.disabled = true;
+      statusText.textContent = "Nimmt auf";
+
+      const mimeType = bestMimeType();
+      const stream = canvas.captureStream(30);
+      recorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+
+      recorder.addEventListener("dataavailable", (event) => {
+        if (event.data && event.data.size) chunks.push(event.data);
+      });
+
+      recorder.addEventListener("stop", () => {
+        const blob = new Blob(chunks, { type: mimeType || "video/webm" });
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.hidden = false;
+        recordButton.disabled = false;
+        statusText.textContent = "Fertig";
+      });
+
+      recorder.start();
+      window.setTimeout(stopRecording, 12000);
+    }
+
+    pauseButton.addEventListener("click", () => {
+      running = !running;
+      pauseButton.textContent = running ? "Pause" : "Weiter";
+      statusText.textContent = running ? "Bereit" : "Pausiert";
+    });
+
+    recordButton.addEventListener("click", startRecording);
+    window.addEventListener("resize", resize);
+
+    Promise.all([
+      desktopImage.decode().catch(() => null),
+      mobileImage.decode().catch(() => null),
+    ]).finally(() => {
+      resize();
+      requestAnimationFrame(frame);
+    });
+  </script>
+</body>
+</html>

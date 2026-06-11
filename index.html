@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plant Lover - Bring Nature Home</title>
-  <meta name="description" content="Ausgesuchte Pflanzen-Shops f&uuml;r Plant Lover.">
+  <title>BlackDiamonds Jungle – Bring Nature Home</title>
+  <meta name="description" content="Ausgesuchte Pflanzen-Shops f&uuml;r BlackDiamonds Jungle.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,7 +50,7 @@
     }
 
     body::before {
-      z-index: -3;
+      z-index: 0;
       background-image: url("assets/plant-background-desktop.png");
       background-repeat: no-repeat;
       background-position: top center;
@@ -59,11 +59,33 @@
     }
 
     body::after {
-      z-index: -2;
+      z-index: 1;
       background:
         radial-gradient(circle at 50% 20%, rgba(251, 236, 190, 0.22), transparent 24rem),
         radial-gradient(circle at 18% 10%, rgba(8, 17, 8, 0.14), transparent 18rem),
         linear-gradient(180deg, rgba(3, 8, 3, 0.06), rgba(2, 7, 3, 0.36) 36%, rgba(1, 5, 2, 0.62));
+    }
+
+    .background-media {
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .page-bg-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      filter: saturate(1.06) contrast(1.04);
+    }
+
+    .page-bg-video-mobile {
+      display: none;
     }
 
     a {
@@ -73,7 +95,7 @@
 
     .site {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       width: min(100%, 1120px);
       margin: 0 auto;
       padding: 48px 22px 32px;
@@ -529,6 +551,14 @@
         background-position: top center;
       }
 
+      .page-bg-video-desktop {
+        display: none;
+      }
+
+      .page-bg-video-mobile {
+        display: block;
+      }
+
       .site {
         padding: 20px 10px 18px;
       }
@@ -603,8 +633,8 @@
       }
 
       .shop-mark {
-        width: 62px;
-        height: 62px;
+        width: 86px;
+        height: 86px;
         margin-bottom: 8px;
         font-size: 1.16rem;
       }
@@ -758,11 +788,12 @@
       }
 
       .shop-mark {
-        width: 50px;
-        height: 50px;
+        width: 72px;
+        height: 72px;
         margin-bottom: 6px;
         font-size: 0.98rem;
       }
+
 
       .shop-title {
         min-height: 30px;
@@ -815,15 +846,24 @@
   </style>
 </head>
 <body>
+  <div class="background-media" aria-hidden="true">
+    <video class="page-bg-video page-bg-video-desktop" data-bg-video autoplay muted loop playsinline preload="auto" poster="assets/plant-background-desktop.png">
+      <source data-src="assets/mama-breitbild.mov">
+    </video>
+    <video class="page-bg-video page-bg-video-mobile" data-bg-video autoplay muted loop playsinline preload="auto" poster="assets/plant-background-clean.png">
+      <source data-src="assets/mama-mobil.mov">
+    </video>
+  </div>
+
   <div class="site">
-    <header class="hero" aria-label="Plant Lover">
+    <header class="hero" aria-label="BlackDiamonds Jungle">
       <div class="hero-inner">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 64 64" fill="currentColor" role="img">
             <path d="M31.5 3.5C19.2 8.8 12.8 18.2 12.8 31c0 15 10.7 24.2 18.9 29.7C40.3 55.2 51.2 46 51.2 31c0-12.8-6.7-22.2-19.7-27.5Zm-1.7 9.7v12.2l-8.9-8.9a28 28 0 0 1 8.9-3.3Zm4.4 0a28 28 0 0 1 8.9 3.3l-8.9 8.9V13.2ZM16.9 28.7a24.7 24.7 0 0 1 1.7-7.4l11.2 11.2v8.1L16.9 28.7Zm30.2 0L34.2 40.6v-8.1l11.2-11.2a24.7 24.7 0 0 1 1.7 7.4ZM19 37.4l10.8 10v7.5A34.1 34.1 0 0 1 19 37.4Zm15.2 17.5v-7.5l10.8-10a34.1 34.1 0 0 1-10.8 17.5Z"/>
           </svg>
         </span>
-        <h1>Plant Lover</h1>
+        <h1>BlackDiamonds Jungle</h1>
         <p class="subtitle">Bring Nature Home</p>
         <div class="ornament" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -1048,7 +1088,7 @@
       </div>
     </main>
 
-    <section class="trust-bar" aria-label="Plant Lover Vorteile">
+    <section class="trust-bar" aria-label="BlackDiamonds Jungle Vorteile">
       <article class="trust-item">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 21v-5.5M6 15.5C3.8 14.6 2.5 13 2.5 10.7c3.1-.2 5.6 1 6.7 3.4M12 21V9M12 12.5c-2.6-.8-4.4-2.6-4.4-5 3.2-.2 5.8 1.2 6.8 4.1M12 16c3.8-.6 6.3-2.9 6.7-6.7-4-.2-7 1.9-7.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h3 class="trust-title">F&uuml;r Pflanzenliebhaber</h3>
@@ -1067,7 +1107,7 @@
     </section>
 
     <footer>
-      <span>Plant Lover - Bring Nature Home</span>
+      <span>BlackDiamonds Jungle – Bring Nature Home</span>
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21V9M12 13c-4.5 0-7-2.8-7-7 4.5 0 7 2.8 7 7Zm0 3c4.5 0 7-2.8 7-7-4.5 0-7 2.8-7 7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span style="font-size:0.78rem;font-weight:400;opacity:0.7;">
         <a href="/impressum.html" style="color:inherit;text-decoration:none;margin-right:12px;">Impressum</a>
@@ -1318,7 +1358,7 @@
   </script>
 
   <!-- Jungle Sound -->
-  <audio id="jungleAudio" loop preload="none" src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Rainforest-sounds.mp3"></audio>
+  <audio id="jungleAudio" loop preload="none" src="assets/mama-sound.mpeg"></audio>
 
   <button id="soundBtn" aria-label="Sound ein/aus" title="Dschungel-Sound ein/aus" style="
     position: fixed;
@@ -1348,6 +1388,7 @@
     const btn = document.getElementById("soundBtn");
     const iconOn = document.getElementById("soundIconOn");
     const iconOff = document.getElementById("soundIconOff");
+    const backgroundVideos = document.querySelectorAll("[data-bg-video]");
     let playing = false;
 
     function setPlaying(val) {
@@ -1369,6 +1410,46 @@
 
     btn.addEventListener("mouseover", () => { if (!playing) btn.style.transform = "scale(1.1)"; });
     btn.addEventListener("mouseout", () => { btn.style.transform = "scale(1)"; });
+
+    const mobileBackgroundQuery = window.matchMedia("(max-width: 620px)");
+
+    function loadBackgroundVideo(video) {
+      const source = video.querySelector("source");
+      if (source && !source.getAttribute("src")) {
+        source.setAttribute("src", source.dataset.src);
+        video.load();
+      }
+    }
+
+    function syncBackgroundVideos() {
+      backgroundVideos.forEach((video) => {
+        const isMobileVideo = video.classList.contains("page-bg-video-mobile");
+        const shouldPlay = mobileBackgroundQuery.matches ? isMobileVideo : !isMobileVideo;
+
+        if (shouldPlay) {
+          loadBackgroundVideo(video);
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    }
+
+    if (mobileBackgroundQuery.addEventListener) {
+      mobileBackgroundQuery.addEventListener("change", syncBackgroundVideos);
+    } else if (mobileBackgroundQuery.addListener) {
+      mobileBackgroundQuery.addListener(syncBackgroundVideos);
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        backgroundVideos.forEach((video) => video.pause());
+      } else {
+        syncBackgroundVideos();
+      }
+    });
+
+    syncBackgroundVideos();
 
     // Autoplay versuchen
     window.addEventListener("load", () => {

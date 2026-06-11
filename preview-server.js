@@ -17,6 +17,9 @@ const contentTypes = {
   ".jpeg": "image/jpeg",
   ".webp": "image/webp",
   ".svg": "image/svg+xml",
+  ".mov": "video/quicktime",
+  ".mpeg": "audio/mpeg",
+  ".mpg": "audio/mpeg",
 };
 
 function sendJson(res, status, data) {

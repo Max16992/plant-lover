@@ -6,6 +6,7 @@
     "preview": "node preview-server.js"
   },
   "dependencies": {
-    "@netlify/blobs": "^10.7.9"
+    "@netlify/blobs": "^10.7.9",
+    "pdfkit": "^0.19.0"
   }
 }
