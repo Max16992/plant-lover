@@ -1401,12 +1401,18 @@
       btn.style.background = val ? "rgba(24,48,28,0.88)" : "rgba(5,17,9,0.82)";
     }
 
+    let userMuted = false;    // Nutzer hat bewusst stummgeschaltet
+    let audioStarted = false; // Sound wurde schon gestartet
+
     btn.addEventListener("click", () => {
       if (playing) {
         audio.pause();
         setPlaying(false);
+        userMuted = true;       // bewusst aus -> nicht automatisch wieder an
       } else {
         audio.volume = 0.35;
+        userMuted = false;
+        audioStarted = true;
         audio.play().then(() => setPlaying(true)).catch(() => {});
       }
     });
@@ -1454,11 +1460,28 @@
 
     syncBackgroundVideos();
 
-    // Autoplay versuchen
+    // 1) Direkter Autoplay-Versuch beim Laden (klappt meist nur am Desktop)
     window.addEventListener("load", () => {
       audio.volume = 0.35;
-      audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+      audio.play().then(() => { setPlaying(true); audioStarted = true; }).catch(() => setPlaying(false));
     });
+
+    // 2) Falls blockiert: beim ersten Antippen / Klick / Scroll (Touch) / Tastendruck starten
+    const startEvents = ["pointerdown", "touchstart", "click", "keydown", "wheel"];
+    function removeStartListeners() {
+      startEvents.forEach((evt) => window.removeEventListener(evt, startOnInteraction));
+    }
+    function startOnInteraction(e) {
+      if (audioStarted || userMuted) return;
+      if (e && e.target && btn.contains(e.target)) return; // Lautsprecher regelt sich selbst
+      audio.volume = 0.35;
+      audio.play().then(() => {
+        setPlaying(true);
+        audioStarted = true;
+        removeStartListeners();
+      }).catch(() => {});
+    }
+    startEvents.forEach((evt) => window.addEventListener(evt, startOnInteraction, { passive: true }));
   </script>
 </body>
 </html>
